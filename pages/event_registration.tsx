@@ -1,4 +1,4 @@
-import type { GetServerSidePropsContext, NextPage } from 'next'
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -6,28 +6,19 @@ import styles from '../styles/Home.module.css'
 import RegistrationForm from '../components/event_registration/RegistrationForm'
 import { none } from 'fp-ts/lib/Option'
 
-export const getServerSideProps = async (context) => { 
-  const { event_code } = context.req.query;
-  const res = await fetch(`api/get_event_data/${event_code}`)
-    .then(res => res.json())
-    .then(data => data as typeof data & EventRegistrationProps)
-
-  return {
-    props: {
-      event_name: res.event_name,
-      event_location: res.event_location,
-      event_date: res.event_date
-    },
-  }
-}
-
-type EventRegistrationProps = {
+export type EventRegistrationProps = {
   event_name: string;
   event_location: string;
   event_date:string;
 }
 
-const EventRegistration: NextPage<EventRegistrationProps> = ({event_name, event_location, event_date}: EventRegistrationProps) => {
+const EventRegistration: NextPage<EventRegistrationProps> = (
+  {
+    event_name, 
+    event_location, 
+    event_date
+  }: EventRegistrationProps
+) => {
   const router = useRouter()
   const { code } = router.query;
   return (
@@ -43,6 +34,17 @@ const EventRegistration: NextPage<EventRegistrationProps> = ({event_name, event_
       </main>
     </div>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = 
+async (context) => {
+  const { event_code } = context.query
+  const registration_props: EventRegistrationProps =
+    await fetch(`http://localhost:3000/api/get_event_data/${event_code}`)
+      .then(res => res.json())
+      .then(res => res as typeof res & EventRegistrationProps)
+
+  return { props: { ... registration_props }}
 }
 
 export default EventRegistration;

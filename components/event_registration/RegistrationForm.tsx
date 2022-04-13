@@ -56,7 +56,7 @@ const RegistrationForm: NextPage<RegistrationFormProps> =
 
     return (
       <>
-      (hasRegistered || <div>
+      {(hasRegistered || <div>
         <h1>Register for { event_name } </h1>
         <form onSubmit={registerUser}>
           <RequiredTextInput 
@@ -71,9 +71,9 @@ const RegistrationForm: NextPage<RegistrationFormProps> =
           />
           <button type="submit">Register</button>
         </form>
-      </div>)
+      </div>)}
 
-      (hasRegistered && <div>
+      {(hasRegistered && <div>
         <h1> {"Thanks for Registering," + (pipe(userName, match(() => "User", (name) => (", " + name)))) + "!" }</h1>
         <p>
           {pipe(userDashBoardLink, match(
@@ -85,7 +85,7 @@ const RegistrationForm: NextPage<RegistrationFormProps> =
             </span> 
           ))} 
         </p>
-      </div>)
+      </div>)}
       </>
     )
   }
