@@ -1,22 +1,26 @@
 import { FunctionComponent } from "react";
+import { HiExclamationCircle } from "react-icons/hi"
 
 type RequiredTextInputProps = {
+  required: boolean;
+  label: string | null;
   placeholder: string;
   autoComplete: string;
   id: string;
 };
 
-const RequiredTextInput = ({ placeholder, autoComplete, id }: RequiredTextInputProps) => {
+const TextInput = ({ required, label, placeholder, autoComplete, id }: RequiredTextInputProps) => {
   return (<>
-    <label htmlFor={ id }>First Name</label>
+    { label && <label htmlFor={ id }> { label } </label> }
+    { required && <HiExclamationCircle color="red" /> }
     <input 
       type="text" 
       id={id} 
       autoComplete={autoComplete} 
       placeholder={placeholder}
-      required 
+      required={required}
     />
   </>)
 }
 
-export default RequiredTextInput;
+export default TextInput;

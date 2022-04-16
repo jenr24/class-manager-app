@@ -4,6 +4,7 @@ import RequiredTextInput from "./RequiredTextInput"
 import { match, none, Option, some } from "fp-ts/Option"
 import { pipe } from "fp-ts/lib/function";
 import { string } from "fp-ts";
+import { BiCheck } from "react-icons/bi"
 
 type RegistrationFormProps = {
   event_name: string;
@@ -30,9 +31,9 @@ const RegistrationForm: NextPage<RegistrationFormProps> =
     const [hasRegistered, setHasRegistered] = useState(false)
     const [userDashBoardLink, setUserDashboardLink] = useState(none_str)
     const [userName, setUserName] = useState(none_str)
+
     const registerUser = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault()
-
       const target = event.target as typeof event.target & RegistrationFormInputs;
       const fetch_options = {
         method: 'POST',
@@ -41,6 +42,7 @@ const RegistrationForm: NextPage<RegistrationFormProps> =
           'Content-Type': 'application/json'
         }
       }
+
       const res: UserRegistrationResponse = await fetch(`localhost/api/register_user/`, fetch_options)
         .then(res => res.json())
         .then(res => res as typeof res & UserRegistrationResponse)
@@ -57,19 +59,33 @@ const RegistrationForm: NextPage<RegistrationFormProps> =
     return (
       <>
       {(hasRegistered || <div>
-        <h1>Register for { event_name } </h1>
+        <h1>Register for { event_name }, {event_date} </h1>
         <form onSubmit={registerUser}>
           <RequiredTextInput 
+            required
+            label=""
             placeholder="First Name" 
             autoComplete="first name" 
             id="first_name" 
           />
           <RequiredTextInput
+            required
+            label=""
             placeholder="Last Name"
             autoComplete="last name"
             id="last_name" 
           />
-          <button type="submit">Register</button>
+          <RequiredTextInput 
+            required
+            label=""
+            placeholder="Social Security Number"
+            autoComplete="ssn"
+            id="ssn"
+          />
+          <button type="submit">
+            <BiCheck />
+            Register
+          </button>
         </form>
       </div>)}
 

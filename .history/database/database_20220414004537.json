@@ -1,0 +1,11 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "nixcloud",
+    "password": "nixcloud",
+    "database": "class_manager_dev",
+    "entities": ["entity/*.ts"],
+    "migrationsTableName": "custom_migration_table",
+    "migrations": ["migration/*.ts"]
+}
